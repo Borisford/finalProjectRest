@@ -9,9 +9,7 @@ import su.anv.finalProjectRest.client.dto.TradesData;
 import su.anv.finalProjectRest.entity.Base;
 import su.anv.finalProjectRest.entity.Request;
 import su.anv.finalProjectRest.entity.Ticker;
-import su.anv.finalProjectRest.error.exception.NoTickerInBaseException;
 import su.anv.finalProjectRest.repository.RequestRepository;
-import su.anv.finalProjectRest.repository.TickerRepository;
 import su.anv.finalProjectRest.schema.save.IncomingSave;
 
 import java.sql.Timestamp;

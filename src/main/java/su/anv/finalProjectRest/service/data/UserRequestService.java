@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import su.anv.finalProjectRest.entity.*;
 import su.anv.finalProjectRest.error.exception.EndBeforeStartException;
 import su.anv.finalProjectRest.repository.RequestRepository;
-import su.anv.finalProjectRest.repository.TickerRepository;
 import su.anv.finalProjectRest.repository.UserRequestRepository;
 import su.anv.finalProjectRest.schema.save.IncomingSave;
 import su.anv.finalProjectRest.schema.save.OutputSave;
