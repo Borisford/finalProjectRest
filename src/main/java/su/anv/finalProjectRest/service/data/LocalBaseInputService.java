@@ -40,8 +40,6 @@ public class LocalBaseInputService {
         if (start.isBefore(end)) {
             incomingSave.setStart(start.toString());
             incomingSave.setEnd(end.toString());
-            System.out.println("Start = " + incomingSave.getStart());
-            System.out.println("End = " + incomingSave.getEnd());
             waitAndSaveToLocal(incomingSave);
         }
     }

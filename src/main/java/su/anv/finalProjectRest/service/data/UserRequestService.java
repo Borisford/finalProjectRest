@@ -38,12 +38,9 @@ public class UserRequestService {
         LocalDate now = start;
         while (!now.isAfter(end)) {
             priceFromLockalBase = requestRepository.findByTickerAndDate(ticker, now);
-            System.out.println("LoL");
             if (priceFromLockalBase.isPresent()) {
-                System.out.println(priceFromLockalBase.get().getDate());
                 optionalUserRequest = userRequestRepository.findByUserAndRequest(user, priceFromLockalBase.get());
                 if (optionalUserRequest.isEmpty()) {
-                    System.out.println("KeK");
                     userRequest = UserRequest.builder()
                             .user(user)
                             .request(priceFromLockalBase.get())

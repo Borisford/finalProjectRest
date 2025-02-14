@@ -52,9 +52,7 @@ public class ClientService {
         Request request;
         List<Request> requestBase = new ArrayList<>();
         while (!(now.after(stop))) {
-            System.out.println("*************");
             if (requestRepository.findByTickerAndDate(ticker, LocalDate.from(now.toLocalDateTime())).isEmpty()) {
-                System.out.println("!!!!!!");
                 request = Request.builder()
                         .ticker(ticker)
                         .date(LocalDate.from(now.toLocalDateTime()))
