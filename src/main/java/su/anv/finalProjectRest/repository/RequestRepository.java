@@ -8,7 +8,6 @@ import su.anv.finalProjectRest.entity.Request;
 import su.anv.finalProjectRest.entity.Ticker;
 import su.anv.finalProjectRest.entity.User;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

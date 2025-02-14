@@ -1,14 +1,11 @@
 package su.anv.finalProjectRest.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import su.anv.finalProjectRest.entity.Request;
-import su.anv.finalProjectRest.entity.Ticker;
 import su.anv.finalProjectRest.entity.User;
 import su.anv.finalProjectRest.entity.UserRequest;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

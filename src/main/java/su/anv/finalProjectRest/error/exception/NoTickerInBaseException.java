@@ -9,9 +9,4 @@ public class NoTickerInBaseException extends RuntimeException{
     public NoTickerInBaseException(String ticker) {
         this.ticker = ticker;
     }
-
-    public NoTickerInBaseException(String message, String ticker) {
-        super(message);
-        this.ticker = ticker;
-    }
 }

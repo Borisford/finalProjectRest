@@ -9,10 +9,4 @@ public class DuplicatedRegistrationParamsException extends RuntimeException{
     public DuplicatedRegistrationParamsException(String param) {
         this.param = param;
     }
-
-
-    public DuplicatedRegistrationParamsException(String message, String param) {
-        super(message);
-        this.param = param;
-    }
 }

@@ -11,11 +11,4 @@ public class EndBeforeStartException extends RuntimeException{
         this.start = start;
         this.end = end;
     }
-
-
-    public EndBeforeStartException(String message, String start, String end) {
-        super(message);
-        this.start = start;
-        this.end = end;
-    }
 }
