@@ -22,8 +22,8 @@ public class LocalBaseInputService {
     private final ClientService clientService;
     private final RequestRepository requestRepository;
     private final TickerRepository tickerRepository;
-    private final static int MAX_REQUEST_PER_MINUTE = 5;
-    private final static int SECONDS_PER_MINUTE = 60;
+    private final static double MAX_REQUEST_PER_MINUTE = 5;
+    private final static double SECONDS_PER_MINUTE = 60;
     private final RateLimiter rateLimiter = RateLimiter.create(MAX_REQUEST_PER_MINUTE/SECONDS_PER_MINUTE);
 
     @Transactional
