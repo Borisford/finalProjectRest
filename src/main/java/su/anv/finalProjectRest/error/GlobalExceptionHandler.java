@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler(Throwable.class)
+    /*@ExceptionHandler(Throwable.class)
     public ResponseEntity<ErrorResponseDto> globalExceptionHandler(Throwable exception) {
         log.error(exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -78,6 +78,6 @@ public class GlobalExceptionHandler {
                         .id(UUID.randomUUID())
                         .message("message: " + exception.getMessage())
                         .build());
-    }
+    }*/
 
 }

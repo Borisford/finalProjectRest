@@ -23,16 +23,16 @@ public class Base {
     @JoinColumn(name = "price_id")
     private Request request;
 
-    @Column(name = "open", unique = false, nullable = false)
+    @Column(name = "open")
     private BigDecimal open;
 
-    @Column(name = "close", unique = false, nullable = false)
+    @Column(name = "close")
     private BigDecimal close;
 
-    @Column(name = "high", unique = false, nullable = false)
+    @Column(name = "high")
     private BigDecimal high;
 
-    @Column(name = "low", unique = false, nullable = false)
+    @Column(name = "low")
     private BigDecimal low;
 
 }

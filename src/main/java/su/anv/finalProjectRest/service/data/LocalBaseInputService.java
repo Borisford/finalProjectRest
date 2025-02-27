@@ -1,16 +1,19 @@
 package su.anv.finalProjectRest.service.data;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import su.anv.finalProjectRest.client.FeignClient;
 import su.anv.finalProjectRest.entity.Ticker;
 import su.anv.finalProjectRest.repository.RequestRepository;
 import su.anv.finalProjectRest.repository.TickerRepository;
-import su.anv.finalProjectRest.schema.save.IncomingSave;
+import su.anv.finalProjectRest.dto.save.IncomingSave;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import com.google.common.util.concurrent.RateLimiter;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +22,11 @@ public class LocalBaseInputService {
     private final ClientService clientService;
     private final RequestRepository requestRepository;
     private final TickerRepository tickerRepository;
-    private static LocalDateTime time;
     private final static int MAX_REQUEST_PER_MINUTE = 5;
-    private final static long MIN_SECONDS_BEFORE_NEXT_REQUEST = 60 / MAX_REQUEST_PER_MINUTE;
+    private final static int SECONDS_PER_MINUTE = 60;
+    private final RateLimiter rateLimiter = RateLimiter.create(MAX_REQUEST_PER_MINUTE/SECONDS_PER_MINUTE);
 
-    static {
-        time = LocalDateTime.now();
-    }
-
+    @Transactional
     public void saveToLocal(String tickerName) {
         IncomingSave incomingSave = IncomingSave.builder().ticker(tickerName).build();
         Optional<LocalDate> date = requestRepository.findMaxSavedDateByTicker(tickerName);
@@ -40,21 +40,8 @@ public class LocalBaseInputService {
         if (start.isBefore(end)) {
             incomingSave.setStart(start.toString());
             incomingSave.setEnd(end.toString());
-            waitAndSaveToLocal(incomingSave);
-        }
-    }
-
-    private void waitAndSaveToLocal(IncomingSave incomingSave) {
-        if (!time.isBefore(LocalDateTime.now())) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            waitAndSaveToLocal(incomingSave);
-        } else {
+            rateLimiter.acquire();
             clientService.saveToLocal(incomingSave);
-            time = LocalDateTime.now().plusSeconds(MIN_SECONDS_BEFORE_NEXT_REQUEST);
         }
     }
 

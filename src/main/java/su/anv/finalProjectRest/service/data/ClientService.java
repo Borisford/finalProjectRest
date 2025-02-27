@@ -9,8 +9,9 @@ import su.anv.finalProjectRest.client.dto.TradesData;
 import su.anv.finalProjectRest.entity.Base;
 import su.anv.finalProjectRest.entity.Request;
 import su.anv.finalProjectRest.entity.Ticker;
+import su.anv.finalProjectRest.mapper.PriceMapper;
 import su.anv.finalProjectRest.repository.RequestRepository;
-import su.anv.finalProjectRest.schema.save.IncomingSave;
+import su.anv.finalProjectRest.dto.save.IncomingSave;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -22,7 +23,8 @@ public class ClientService {
     private final FeignClient feignClient;
     private final TickerService tickerService;
     private final RequestRepository requestRepository;
-    private final Long millisInDay = (long) (24 * 60 * 60 * 1000);
+    private final EmptyDateService emptyDateService;
+    private final PriceMapper priceMapper;
 
     public void saveToLocal(IncomingSave incomingSave) {
         Ticker ticker = tickerService.getByTickerName(incomingSave.getTicker());
@@ -31,35 +33,23 @@ public class ClientService {
         List<TradesData> prices = sr.getResults();
         Map<Timestamp, Base> dataBase = new HashMap<>();
 
-        Base base;
-        for (TradesData     tradesData: prices) {
-            base = Base.builder()
-                    .open(tradesData.getOpen())
-                    .close(tradesData.getClose())
-                    .high(tradesData.getHigh())
-                    .low(tradesData.getLow())
-                    .build();
-            dataBase.put(tradesData.getTimestamp(), base);
+        for (TradesData tradesData: prices) {
+            dataBase.put(tradesData.getTimestamp(), priceMapper.toEntity(tradesData));
         }
 
         Timestamp start = Collections.min(dataBase.keySet());
         Timestamp stop = Collections.max(dataBase.keySet());
-        Timestamp now = start;
 
-
-        Request request;
+        Set<Timestamp> emptyDates = emptyDateService.emptyDates(ticker, start, stop);
         List<Request> requestBase = new ArrayList<>();
-        while (!(now.after(stop))) {
-            if (requestRepository.findByTickerAndDate(ticker, LocalDate.from(now.toLocalDateTime())).isEmpty()) {
-                request = Request.builder()
-                        .ticker(ticker)
-                        .date(LocalDate.from(now.toLocalDateTime()))
-                        .base(dataBase.getOrDefault(now, null))
-                        .build();
+        for (Timestamp now:emptyDates) {
+            Request request = Request.builder()
+                    .ticker(ticker)
+                    .date(LocalDate.from(now.toLocalDateTime()))
+                    .base(dataBase.getOrDefault(now, null))
+                    .build();
 
-                requestBase.add(request);
-            }
-            now.setTime(now.getTime() + millisInDay);
+            requestBase.add(request);
         }
 
         requestRepository.saveAll(requestBase);

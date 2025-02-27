@@ -6,9 +6,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import su.anv.finalProjectRest.entity.User;
-import su.anv.finalProjectRest.schema.auth.JwtAuthenticationResponse;
-import su.anv.finalProjectRest.schema.auth.SignInRequest;
-import su.anv.finalProjectRest.schema.auth.SignUpRequest;
+import su.anv.finalProjectRest.dto.auth.JwtAuthenticationResponse;
+import su.anv.finalProjectRest.dto.auth.SignInRequest;
+import su.anv.finalProjectRest.dto.auth.SignUpRequest;
 
 @Service
 @RequiredArgsConstructor
